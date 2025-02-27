@@ -5,14 +5,13 @@
 	import javax.swing.table.DefaultTableCellRenderer;
 	import javax.swing.table.DefaultTableModel;
 	
-
+	import com.mysql.cj.jdbc.Blob;
 	
 	import java.awt.*;
 	import java.awt.event.*;
 	import java.io.File;
 	import java.io.FileInputStream;
-import java.sql.Blob;
-import java.sql.Connection;
+	import java.sql.Connection;
 	import java.sql.DriverManager;
 	import java.sql.PreparedStatement;
 	import java.sql.ResultSet;

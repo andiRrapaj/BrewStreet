@@ -1,4 +1,3 @@
-
 package Maini;
 
 import java.awt.CardLayout;
@@ -17,9 +16,12 @@ import Maini.log;
 import admin.admindashboard;
 import admin.admpfp;
 import admin.loginadm;
+import admin.tabels;
 import kamarjer.kamarjerprofil;
 import kamarjer.kamarjerdashboard;
+import kamarjer.kamarjerframe;
 import kamarjer.loginkamarjer;
+import kamarjer.tables1;
 import rezervime.rezervime;
 import rezervime.rezervimeloged;
 
@@ -68,8 +70,16 @@ public class maini {
         admpfp admpfp1 = new admpfp(container, cards);
         JPanel admpfp = admpfp1.getPanel();
         
+        tables1 tabels2 = new tables1(container, cards);
+        JPanel tables1 = tabels2.getPanel();
+        
+        kamarjerframe kamarjerframe1 = new kamarjerframe(container, cards, 0);
+        JPanel kamarjerframe = kamarjerframe1.getPanel();
+        
         frame.add(container);
         container.add(rezervime, "rezervime");
+        container.add(kamarjerframe, "kamarjerframe");
+        container.add(tables1, "tables1");
         container.add(admpfp, "admpfp");
         container.add(kamarjerprofil, "kamarjerprofil");
         container.add(kamarjerdashboard, "kamarjerdashboard");

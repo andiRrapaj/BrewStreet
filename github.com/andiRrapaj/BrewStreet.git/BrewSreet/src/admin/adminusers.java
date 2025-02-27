@@ -6,6 +6,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import com.mysql.cj.jdbc.Blob;
+
 import Maini.maini;
 
 import java.awt.*;
@@ -14,7 +16,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -85,7 +86,7 @@ public class adminusers{
         });
         
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBounds(32, 162, 521, 522);
+        scrollPane.setBounds(32, 174, 521, 522);
         panel.add(scrollPane);
      // Call this method to load the data from the database into the table
         loadTableData(table);

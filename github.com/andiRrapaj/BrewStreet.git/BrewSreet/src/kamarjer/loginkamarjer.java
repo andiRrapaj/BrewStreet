@@ -31,7 +31,7 @@ public class loginkamarjer{
         btnNewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	 cards.show(container, "kamarjerdashboard");
+            	 cards.show(container, "tables1");
             }
 
         });

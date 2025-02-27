@@ -64,20 +64,20 @@ public class log {
     panel.add(btnNewButton_2);
    
   
-    ImageIcon imageIcon = new ImageIcon(log.class.getResource("/img/admin.png"));
+    ImageIcon imageIcon = new ImageIcon("admin.png");
     Image image = imageIcon.getImage().getScaledInstance(179, 161, Image.SCALE_SMOOTH); 
     JLabel imageLabel = new JLabel(new ImageIcon(image));
     imageLabel.setBounds(108,203,202,181); 
     panel.add(imageLabel);
  
-    ImageIcon imageIcon1 = new ImageIcon(log.class.getResource("/img/bk.jpg"));
+    ImageIcon imageIcon1 = new ImageIcon("bk.jpg");
     Image image1 = imageIcon1.getImage().getScaledInstance(179, 161, Image.SCALE_SMOOTH); 
     JLabel imageLabel1 = new JLabel(new ImageIcon(image1));
     imageLabel1.setBounds(362,212,195,172); 
     panel.add(imageLabel1);
     
 
-    ImageIcon imageIcon2 = new ImageIcon(log.class.getResource("/img/Waiter.png"));
+    ImageIcon imageIcon2 = new ImageIcon("Waiter.png");
     Image image2 = imageIcon2.getImage().getScaledInstance(179, 161, Image.SCALE_SMOOTH); 
     JLabel imageLabel2 = new JLabel(new ImageIcon(image2));
     imageLabel2.setBounds(616,203,202,181); 
