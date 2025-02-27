@@ -13,7 +13,7 @@
 		import java.sql.ResultSet;
 		import java.awt.event.ActionEvent;
 		import kamarjer.kamarjerdashboard;
-		
+		import java.awt.*;
 		public class tables1 {
 		    private JPanel panel;
 		    private static JTable table;

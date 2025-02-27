@@ -9,7 +9,7 @@ import Maini.maini;
 import java.awt.*;
 import java.awt.event.*;
 
-
+import java.awt.*;
 public class tabels{
     private JPanel panel;
     private JPanel container;

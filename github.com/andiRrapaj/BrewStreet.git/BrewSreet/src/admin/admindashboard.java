@@ -1,6 +1,7 @@
 package admin;
 
 import java.awt.CardLayout;
+import java.awt.*;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
