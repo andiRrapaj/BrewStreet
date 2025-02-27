@@ -44,7 +44,7 @@ public class rezervimeloged {
         panel.add(btnNewButton);
         
         
-      //--------------------------------------------------------------------------------------------------------------------------------------------  
+//      //--------------------------------------------------------------------------------------------------------------------------------------------  
 
         JFrame fr = new JFrame();
 		fr.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -117,20 +117,109 @@ public class rezervimeloged {
       btnCancel.setBounds(356, 380, 121, 34);
       fr.getContentPane().add(btnCancel); 
       
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
+      
+      
+      JFrame edd = new JFrame();
+      edd.getContentPane().setBackground(new Color(143, 188, 143));
+		edd.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		edd.setTitle("Shto Rezervim");
+		edd.setLocation(400, 150);
+		edd.setSize(600,500);
+		edd.getContentPane().setLayout(null);
+		
+		
+		
+		
+    JDateChooser dataEdit = new JDateChooser();
+    dataEdit.setBounds(99, 159, 167, 28);
+    edd.getContentPane().add(dataEdit);
+    
+    JTextField nameField = new JTextField();
+    nameField.setBounds(99, 68, 167, 34);
+    edd.getContentPane().add(nameField);
+    nameField.setColumns(10);
+    
+    JTextField telEdit = new JTextField();
+    telEdit.setColumns(10);
+    telEdit.setBounds(400, 68, 176, 34);
+    edd.getContentPane().add(telEdit);
+    
+    JTextArea detajeFieldEDT =new JTextArea();
+    detajeFieldEDT.setLineWrap(true);
+    detajeFieldEDT.setWrapStyleWord(true);
+
+    JScrollPane scrollPaneEdt = new JScrollPane(detajeFieldEDT);
+    scrollPaneEdt.setBounds(409, 159, 167, 173);
+
+    edd.getContentPane().add(scrollPaneEdt);
+
+    
+    JLabel em = new JLabel("Emri");
+    em.setFont(new Font("Times New Roman", Font.ITALIC, 21));
+    em.setBounds(25, 68, 64, 34);
+    edd.getContentPane().add(em);
+    
+    JLabel lblDat = new JLabel("Data");
+    lblDat.setFont(new Font("Times New Roman", Font.ITALIC, 21));
+    lblDat.setBounds(25, 159, 64, 34);
+    edd.getContentPane().add(lblDat);
+    
+    JLabel lblNr = new JLabel("Nr. Tel");
+    lblNr.setFont(new Font("Times New Roman", Font.ITALIC, 21));
+    lblNr.setBounds(311, 68, 79, 34);
+    edd.getContentPane().add(lblNr);
+    
+    JLabel lblDet = new JLabel("Detaje");
+    lblDet.setFont(new Font("Times New Roman", Font.ITALIC, 21));
+    lblDet.setBounds(335, 159, 64, 34);
+    edd.getContentPane().add(lblDet);
+    
+    JButton updateBtn = new JButton("Update");
+   
+ 
+    updateBtn.setBackground(Color.WHITE);
+    updateBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+    updateBtn.setBounds(85, 380, 121, 34);
+    edd.getContentPane().add(updateBtn);
+    
+    JButton deleteBtn = new JButton("Delete");
+    deleteBtn.setBackground(Color.WHITE);
+    deleteBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+    deleteBtn.setBounds(356, 380, 121, 34);
+    edd.getContentPane().add(deleteBtn);
+    
+    JLabel lblId = new JLabel("ID");
+    lblId.setFont(new Font("Times New Roman", Font.ITALIC, 21));
+    lblId.setBounds(25, 233, 64, 34);
+    edd.getContentPane().add(lblId);
+    
+    JTextField idField = new JTextField();
+    idField.setColumns(10);
+    idField.setBounds(99, 233, 33, 34);
+    edd.getContentPane().add(idField);
+      
+      
+      
       
       
         JButton btnNewButton_1 = new JButton("Shto");
         btnNewButton_1.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		 fr.setVisible(true);
+        		 try {
+					fr.setVisible(true);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
         	}
         });
         btnNewButton_1.setBackground(Color.WHITE);
         btnNewButton_1.setBounds(757, 205, 120, 109);
         panel.add(btnNewButton_1);
-        JButton btnNewButton_2 = new JButton("New button");
-        btnNewButton_2.setBounds(637, 716, 22, 21);
-        panel.add(btnNewButton_2);
+        JButton refreshBtn = new JButton(".............");
+        refreshBtn.setBounds(637, 716, 22, 21);
+        panel.add(refreshBtn);
         
         tableRes = new JTable();
         tableRes.setBounds(44, 91, 615, 646);
