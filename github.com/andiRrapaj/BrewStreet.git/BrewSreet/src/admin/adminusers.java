@@ -6,7 +6,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import com.mysql.cj.jdbc.Blob;
+import java.sql.Blob;
 
 import Maini.maini;
 

@@ -5,7 +5,7 @@
 	import javax.swing.table.DefaultTableCellRenderer;
 	import javax.swing.table.DefaultTableModel;
 	
-	import com.mysql.cj.jdbc.Blob;
+	import java.sql.Blob;
 	
 	import java.awt.*;
 	import java.awt.event.*;

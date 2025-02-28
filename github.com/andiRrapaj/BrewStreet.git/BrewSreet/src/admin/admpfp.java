@@ -16,6 +16,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import Maini.log;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -207,7 +210,7 @@ public class admpfp {
                imageLabel.setBounds(0, 0, 999, 408); // Adjusted bounds to match the resized image
 
                // Load the image
-               ImageIcon icon = new ImageIcon("sm.jpg"); // Replace with your image path
+               ImageIcon icon = new ImageIcon(log.class.getResource("/img/sm.jpg")); // Replace with your image path
                Image image = icon.getImage(); // Get the image from the icon
 
                // Resize the image to 800x300

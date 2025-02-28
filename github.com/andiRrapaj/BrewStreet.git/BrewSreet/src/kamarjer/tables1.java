@@ -2,7 +2,10 @@
 		
 		import javax.swing.*;
 		import javax.swing.table.DefaultTableModel;
-		import com.mysql.cj.jdbc.Blob;
+
+import Maini.log;
+
+import java.sql.Blob;
 		import java.awt.*;
 		import java.awt.event.ActionListener;
 		import java.awt.event.MouseAdapter;
@@ -183,7 +186,7 @@
 		        panel_1.setBounds(0, 0, 1000, 38);
 		        panel.add(panel_1);
 		        panel_1.setLayout(null);
-		        ImageIcon originalIcon = new ImageIcon("sd.png"); // Replace with your image path
+		        ImageIcon originalIcon = new ImageIcon(log.class.getResource("/img/sd.png")); // Replace with your image path
 
 		     // Resize the image to 100x100
 		     Image image = originalIcon.getImage(); // Get the image from the icon
@@ -192,7 +195,7 @@
 
 		     // Create a JLabel with the resized image
 		     JLabel imageLabel = new JLabel(resizedIcon);
-		     imageLabel.setBounds(10, 0, 121, 38); // Set bounds for the label (x, y, width, height)
+		     imageLabel.setBounds(10, 3, 121, 28); // Set bounds for the label (x, y, width, height)
 
 		     // Add the label to panel_1
 		     panel_1.add(imageLabel);
@@ -218,52 +221,52 @@
 		        btnNewButton.addActionListener(e -> cards.show(container, "kamarjerdashboard"));
 		        panel_1.add(btnNewButton);
 		
-		        ImageIcon icon1 = new ImageIcon("tavolin.png");
+		        ImageIcon icon1 = new ImageIcon(log.class.getResource("/img/tavolin.png"));
 		        JLabel label1 = new JLabel(resizeImage(icon1, 250, 225));
 		        label1.setBounds(720, 23, 250, 225);
 		        panel.add(label1);
 		
-		        ImageIcon icon10 = new ImageIcon("tavolin3.png");
+		        ImageIcon icon10 = new ImageIcon(log.class.getResource("/img/tavolin3.png"));
 		        JLabel label10 = new JLabel(resizeImage(icon10, 250, 225));
 		        label10.setBounds(370, 552, 250, 193);
 		        panel.add(label10);
 		
-		        ImageIcon icon9 = new ImageIcon("tavolin3.png");
+		        ImageIcon icon9 = new ImageIcon(log.class.getResource("/img/tavolin3.png"));
 		        JLabel label9 = new JLabel(resizeImage(icon9, 250, 225));
 		        label9.setBounds(114, 381, 250, 225);
 		        panel.add(label9);
 		
-		        ImageIcon icon7 = new ImageIcon("tavolin4.png");
+		        ImageIcon icon7 = new ImageIcon(log.class.getResource("/img/tavolin4.png"));
 		        JLabel label7 = new JLabel(resizeImage(icon7, 250, 200));
 		        label7.setBounds(370, 48, 250, 200);
 		        panel.add(label7);
 		
-		        ImageIcon icon8 = new ImageIcon("tavolin3.png");
+		        ImageIcon icon8 = new ImageIcon(log.class.getResource("/img/tavolin3.png"));
 		        JLabel label8 = new JLabel(resizeImage(icon8, 250, 225));
 		        label8.setBounds(720, 275, 250, 225);
 		        panel.add(label8);
 		
-		        ImageIcon icon6 = new ImageIcon("tavolin4.png");
+		        ImageIcon icon6 = new ImageIcon(log.class.getResource("/img/tavolin4.png"));
 		        JLabel label6 = new JLabel(resizeImage(icon6, 160, 160));
 		        label6.setBounds(50, 221, 160, 160);
 		        panel.add(label6);
 		
-		        ImageIcon icon5 = new ImageIcon("tavolin.png");
+		        ImageIcon icon5 = new ImageIcon(log.class.getResource("/img/tavolin.png"));
 		        JLabel label5 = new JLabel(resizeImage(icon5, 160, 160));
 		        label5.setBounds(50, 34, 160, 160);
 		        panel.add(label5);
 		
-		        ImageIcon icon2 = new ImageIcon("tavolin2.png");
+		        ImageIcon icon2 = new ImageIcon(log.class.getResource("/img/tavolin2.png"));
 		        JLabel label2 = new JLabel(resizeImage(icon2, 255, 225));
 		        label2.setBounds(353, 289, 255, 225);
 		        panel.add(label2);
 		
-		        ImageIcon icon4 = new ImageIcon("tavolin4.png");
+		        ImageIcon icon4 = new ImageIcon(log.class.getResource("/img/tavolin4.png"));
 		        JLabel label4 = new JLabel(resizeImage(icon4, 200, 180));
 		        label4.setBounds(30, 582, 200, 180);
 		        panel.add(label4);
 		
-		        ImageIcon icon3 = new ImageIcon("tavolin3.png");
+		        ImageIcon icon3 = new ImageIcon(log.class.getResource("/img/tavolin3.png"));
 		        JLabel label3 = new JLabel(resizeImage(icon3, 250, 225));
 		        label3.setBounds(673, 540, 250, 193);
 		        panel.add(label3);

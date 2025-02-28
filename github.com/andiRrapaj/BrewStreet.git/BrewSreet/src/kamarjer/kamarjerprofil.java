@@ -1,5 +1,5 @@
 package kamarjer;
-
+import javax.swing.*;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -14,7 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-;
+
 
 
 public class kamarjerprofil {

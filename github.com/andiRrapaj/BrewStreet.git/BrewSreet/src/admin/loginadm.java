@@ -1,6 +1,8 @@
 package admin;
 
 import javax.swing.*;
+
+import Maini.log;
 import Maini.maini;
 
 import java.awt.*;
@@ -25,9 +27,10 @@ public class loginadm {
         panel.setBounds(0, 0, 1000, 800); 
         panel.setBackground(new Color(0, 128, 128)); 
         
+        
         JButton btnNewButton = new JButton("Log-in");
         btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        btnNewButton.setBounds(602, 473, 211, 34);
+        btnNewButton.setBounds(44, 513, 211, 34);
         btnNewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -39,31 +42,33 @@ public class loginadm {
         
         
         
+        
         textField = new JTextField();
-        textField.setBounds(574, 286, 251, 34);
+        textField.setBounds(44, 282, 251, 34);
         panel.add(textField);
         textField.setColumns(10);
         
         textField_1 = new JTextField();
-        textField_1.setBounds(574, 366, 251, 34);
+        textField_1.setBounds(44, 380, 251, 34);
         panel.add(textField_1);
         textField_1.setColumns(10);
         
         JLabel lblNewLabel = new JLabel("Please Login to Admin Dashboard!");
         lblNewLabel.setFont(new Font("Tahoma", Font.ITALIC, 15));
-        lblNewLabel.setBounds(558, 169, 251, 34);
+        lblNewLabel.setBounds(65, 190, 251, 34);
         panel.add(lblNewLabel);
         
         JLabel lblNewLabel_2 = new JLabel("Welcome");
+        lblNewLabel_2.setForeground(new Color(192, 192, 192));
         lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 29));
-        lblNewLabel_2.setBounds(602, 115, 145, 44);
+        lblNewLabel_2.setBounds(110, 108, 145, 44);
         panel.add(lblNewLabel_2);
         
    
-        ImageIcon imageIcon = new ImageIcon("ic.png");
+        ImageIcon imageIcon = new ImageIcon(log.class.getResource("/img/ic.png"));
         Image image = imageIcon.getImage().getScaledInstance(179, 161, Image.SCALE_SMOOTH); 
         JLabel imageLabel = new JLabel(new ImageIcon(image));
-        imageLabel.setBounds(59,191,332,323); 
+        imageLabel.setBounds(548,127,332,342); 
         panel.add(imageLabel);
         
         
@@ -82,8 +87,16 @@ public class loginadm {
         
         JSeparator separator = new JSeparator();
         separator.setOrientation(SwingConstants.VERTICAL);
-        separator.setBounds(444, 62, 16, 667);
+        separator.setBounds(428, 61, 16, 667);
         panel.add(separator);
+        JLabel bPhoto = new JLabel();
+        bPhoto.setSize(1000, 800);
+        bPhoto.setLocation(0, 0);
+        bPhoto.setHorizontalAlignment(SwingConstants.CENTER);
+        ImageIcon originalB = new ImageIcon(log.class.getResource("/img/background.png"));
+        Image scaledB = originalB.getImage().getScaledInstance(bPhoto.getWidth(), bPhoto.getHeight(), Image.SCALE_SMOOTH);
+        bPhoto.setIcon(new ImageIcon(scaledB));
+        panel.add(bPhoto);
     }
     
     public JPanel getPanel() {
