@@ -2,6 +2,8 @@ package rezervime;
 
 
 import javax.swing.*;
+
+import Maini.log;
 import Maini.maini;
 import javax.swing.*;
 import java.awt.*;
@@ -48,9 +50,11 @@ public class rezervime{
         panel.add(textField_2);
         textField_2.setColumns(10);
         
-        JLabel logo = new JLabel("");
-        logo.setBounds(93, 127, 191, 182);
-        panel.add(logo);
+        ImageIcon imageIcon1 = new ImageIcon(log.class.getResource("/img/ic.png"));
+        Image image1 = imageIcon1.getImage().getScaledInstance(179, 161, Image.SCALE_SMOOTH); 
+        JLabel imageLabel1 = new JLabel(new ImageIcon(image1));
+        imageLabel1.setBounds(55,315,253,248); 
+        panel.add(imageLabel1);
         
         textField_3 = new JTextField();
         textField_3.setBounds(662, 395, 201, 30);

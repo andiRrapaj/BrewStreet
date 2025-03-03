@@ -77,7 +77,7 @@ public class kamarjerframe {
         JLabel lblNewLabel_1 = new JLabel("<html><center>BrewStreet Café<br>123 Main Street, City, Country<br>"
                 + "Phone: +XXX-XXX-XXXX<br>Email: contact@brewstreet.com<br>"
                 + "</center></html>");
-        lblNewLabel_1.setBounds(66, 10, 200, 60);
+        lblNewLabel_1.setBounds(68, 10, 200, 60);
         panel_2.add(lblNewLabel_1);
         lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
 

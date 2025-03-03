@@ -29,7 +29,7 @@ public class adminbills{
        
     	
     	JPanel panel = new JPanel();
-    	panel.setBounds(200, 2000, 1136, 670);
+    	panel.setBounds(200, 2000, 1001, 670);
     	panel.setBackground(Color.LIGHT_GRAY);
     	panel.setLayout(null);
 		
@@ -88,7 +88,7 @@ public class adminbills{
         panel.add(lblNewLabel_1);
         
         textField_5 = new JTextField();
-        textField_5.setBounds(25, 90, 96, 19);
+        textField_5.setBounds(25, 90, 120, 19);
         panel.add(textField_5);
         textField_5.setColumns(10);
         

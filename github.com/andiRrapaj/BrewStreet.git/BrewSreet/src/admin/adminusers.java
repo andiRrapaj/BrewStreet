@@ -1,5 +1,7 @@
 package admin;
 
+//888
+
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -7,6 +9,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import java.sql.Blob;
+
+import Maini.DatabaseHelper;
+import Maini.DbConn;
+import Maini.ImageRenderer;
 
 import Maini.maini;
 
@@ -20,26 +26,25 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.awt.*;
 
 public class adminusers{
     private JPanel panel;
     private JPanel container;
     private CardLayout cards;
-    private JTextField textField;
-    private JTextField textField_1;
-    private JLabel imageLabel;
-    private JTextField textField_2;
-    private JTextField textField_3;
-    private JTable table;
-    private JTextField textField_4;
-    private JTextField textField_5;
-    private JTextField textField_6;
-    private JTextField textField_8;
-    private JTextField txtSearch;
+   
+    private JTable usersTable;
+    private JTextField usernameField;
+    private JTextField passwordField;
+    private JComboBox<String> roleComboBox;
+    private JTextField nrField;
+    private JTextField searchField;
     private File selectedFile;
-    private JButton btnNewButton_3;
-    private JButton btnNewButton;
+    
+    private JTextField idField;
+
     
     public adminusers(JPanel container, CardLayout cards) {
         this.container = container;
@@ -55,18 +60,37 @@ public class adminusers{
         lblNewLabel.setBounds(32, 21, 161, 35);
         panel.add(lblNewLabel);
         
-        String[] columnNames = {"Name", "Phone Number", "Address", "Email","Image" };
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-        table = new JTable(model); 
+        usersTable = new JTable();
+        usersTable.setModel(DatabaseHelper.getTableData("users")); 
+        usersTable.getColumnModel().getColumn(4).setCellRenderer(new ImageRenderer()); 
 
-        JButton uploadButton = new JButton("Upload Image");
-        uploadButton.setBounds(714, 326, 107, 30);
         
-        panel.add(uploadButton);
-        uploadButton.addActionListener(e -> chooseImage());
+        usersTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int selectedRow = usersTable.getSelectedRow();
+                if (selectedRow != -1) { 
+                    idField.setText(usersTable.getValueAt(selectedRow, 0).toString()); 
+                    usernameField.setText(usersTable.getValueAt(selectedRow, 1).toString()); 
+                    nrField.setText(usersTable.getValueAt(selectedRow, 2).toString()); 
+                    passwordField.setText(usersTable.getValueAt(selectedRow, 3).toString()); 
+                    
+                    String role = usersTable.getValueAt(selectedRow, 4).toString();
+                    roleComboBox.setSelectedItem(role);
+
+                   
+                }
+            }
+        });
+
+        JButton uploadImage = new JButton("Upload Image");
+        uploadImage.setBounds(714, 197, 107, 30);
+        
+        panel.add(uploadImage);
+        
 
  
-        uploadButton.addActionListener(e -> {
+        uploadImage.addActionListener(e -> {
         
         	JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "jpeg", "png"));
@@ -77,7 +101,7 @@ public class adminusers{
                 
                 ImageIcon imageIcon = new ImageIcon(selectedFile.getAbsolutePath());
                 JLabel imageLabel = new JLabel(imageIcon);
-                imageLabel.setBounds(170, 520, 100, 100); // You can adjust the size if needed
+                imageLabel.setBounds(170, 520, 100, 100); 
                 panel.add(imageLabel);
 
                 panel.revalidate();
@@ -85,307 +109,285 @@ public class adminusers{
             }
         });
         
-        JScrollPane scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = new JScrollPane(usersTable);
         scrollPane.setBounds(32, 174, 521, 522);
         panel.add(scrollPane);
-     // Call this method to load the data from the database into the table
-        loadTableData(table);
-        table.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int selectedRow = table.getSelectedRow();
-                if (selectedRow != -1) {
-                    // Get values from the selected row
-                    String name = (String) table.getValueAt(selectedRow, 0);  // Assuming name is in column 0
-                    String phone = (String) table.getValueAt(selectedRow, 1); // Assuming phone is in column 1
-                    String address = (String) table.getValueAt(selectedRow, 2); // Assuming address is in column 2
-                    String email = (String) table.getValueAt(selectedRow, 3);  // Assuming email is in column 3
+   
+                
+        usernameField = new JTextField();
+        usernameField.setBounds(578, 262, 117, 26);
+        panel.add(usernameField);
+        usernameField.setColumns(10);
+        
+        passwordField = new JTextField();
+        passwordField.setBounds(578, 329, 117, 26);
+        panel.add(passwordField);
+        passwordField.setColumns(10);
+        
+        roleComboBox = new JComboBox<>(new String[]{"receptionist", "admin", "waiter"});
+        roleComboBox.setBounds(578, 483, 117, 26);
+        panel.add(roleComboBox);
+        
+        idField = new JTextField();
+        idField.setBounds(578, 200, 92, 26);
+        idField.setEditable(false); 
+        panel.add(idField);
 
-                    // Set these values in your text fields (if needed)
-                    textField_4.setText(name);
-                    textField_8.setText(phone);
-                    textField_6.setText(address);
-                    textField_5.setText(email);
+        
+        nrField = new JTextField();
+        nrField.setBounds(578, 410, 117, 26);
+        panel.add(nrField);
+        nrField.setColumns(10);
+        
+        JButton addBtn = new JButton("Add+");
+        addBtn.addActionListener(e -> {
+            String username = usernameField.getText();
+            String phone = nrField.getText();
+            String password = passwordField.getText();
+            String role = (String) roleComboBox.getSelectedItem(); 
+            byte[] profilePicture = null;
+
+            if (selectedFile != null) {
+                try {
+                    FileInputStream fis = new FileInputStream(selectedFile);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = fis.read(buffer)) != -1) {
+                        baos.write(buffer, 0, bytesRead);
+                    }
+                    profilePicture = baos.toByteArray();
+                    fis.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            try {
+                Connection conn = DbConn.getConnection();
+                String query = "INSERT INTO users (username, phone, password, role, profile_picture) VALUES (?, ?, ?, ?, ?)";
+                PreparedStatement stmt = conn.prepareStatement(query);
+                stmt.setString(1, username);
+                stmt.setString(2, phone);
+                stmt.setString(3, password);
+                stmt.setString(4, role);
+                if (profilePicture != null) {
+                    stmt.setBytes(5, profilePicture);
+                } else {
+                    stmt.setNull(5, Types.BLOB);
+                }
+
+                stmt.executeUpdate();
+                stmt.close();
+                conn.close();
+                
+                
+                usersTable.setModel(DatabaseHelper.getTableData("users"));
+                usersTable.getColumnModel().getColumn(4).setCellRenderer(new ImageRenderer());
+
+                JOptionPane.showMessageDialog(panel, "User added successfully!");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(panel, "Error adding user!");
+            }
+        });
+
+
+        addBtn.setBounds(563, 577, 85, 31);
+        
+        panel.add(addBtn);
+        JButton deleteBtn = new JButton("Delete");
+        deleteBtn.addActionListener(e -> {
+            String userId = idField.getText(); 
+            if (userId.isEmpty()) {
+                JOptionPane.showMessageDialog(panel, "Please select a user to delete!");
+                return;
+            }
+
+            int confirm = JOptionPane.showConfirmDialog(panel, "Are you sure you want to delete this user?", "Delete Confirmation", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                try {
+
+
+                    Connection conn = DbConn.getConnection();
+                    String query = "DELETE FROM users WHERE id = ?";
+                    PreparedStatement stmt = conn.prepareStatement(query);
+                    stmt.setInt(1, Integer.parseInt(userId)); 
+
+                    stmt.executeUpdate();
+                    stmt.close();
+                    conn.close();
+
+                    
+                    usersTable.setModel(DatabaseHelper.getTableData("users"));
+                    usersTable.getColumnModel().getColumn(4).setCellRenderer(new ImageRenderer());
+
+                    JOptionPane.showMessageDialog(panel, "User deleted successfully!");
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(panel, "Error deleting user!");
                 }
             }
         });
+
+        deleteBtn.setBounds(714, 577, 92, 30);
+        panel.add(deleteBtn);
         
-        textField_4 = new JTextField();
-        textField_4.setBounds(578, 262, 117, 26);
-        panel.add(textField_4);
-        textField_4.setColumns(10);
-        
-        textField_5 = new JTextField();
-        textField_5.setBounds(578, 329, 117, 26);
-        panel.add(textField_5);
-        textField_5.setColumns(10);
-        
-        textField_6 = new JTextField();
-        textField_6.setBounds(714, 410, 117, 26);
-        panel.add(textField_6);
-        textField_6.setColumns(10);
-        
-        textField_8 = new JTextField();
-        textField_8.setBounds(578, 410, 117, 26);
-        panel.add(textField_8);
-        textField_8.setColumns(10);
-        
-        JButton btnNewButton = new JButton("Save");
-        btnNewButton.setBounds(697, 554, 92, 30);
-        panel.add(btnNewButton);
-        
-        JButton btnNewButton1 = new JButton("Add+");
-        btnNewButton1.setBounds(578, 489, 85, 31);
-        btnNewButton1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	insertusers();
+        JButton updateBtn = new JButton("Update");
+        updateBtn.addActionListener(e -> {
+            String userId = idField.getText(); 
+            String username = usernameField.getText();
+            String phone = nrField.getText();
+            String password = passwordField.getText();
+            String role = (String) roleComboBox.getSelectedItem();  
+            byte[] profilePicture = null;
+
+             
+            if (selectedFile != null) {
+                try {
+                    FileInputStream fis = new FileInputStream(selectedFile);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = fis.read(buffer)) != -1) {
+                        baos.write(buffer, 0, bytesRead);
+                    }
+                    profilePicture = baos.toByteArray();
+                    fis.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            try {
+                
+                Connection conn = DbConn.getConnection();
+                String query = "UPDATE users SET username = ?, phone = ?, password = ?, role = ?, profile_picture = ? WHERE id = ?";
+                PreparedStatement stmt = conn.prepareStatement(query);
+                stmt.setString(1, username);
+                stmt.setString(2, phone);
+                stmt.setString(3, password);
+                stmt.setString(4, role);
+                if (profilePicture != null) {
+                    stmt.setBytes(5, profilePicture); 
+                } else {
+                    stmt.setNull(5, Types.BLOB); 
+                }
+                stmt.setInt(6, Integer.parseInt(userId)); 
+
+                stmt.executeUpdate();
+                stmt.close();
+                conn.close();
+
+               
+                usersTable.setModel(DatabaseHelper.getTableData("users"));
+                usersTable.getColumnModel().getColumn(4).setCellRenderer(new ImageRenderer());
+
+                JOptionPane.showMessageDialog(panel, "User updated successfully!");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(panel, "Error updating user!");
             }
         });
-        panel.add(btnNewButton1);
-        JButton btnNewButton_2 = new JButton("Delete");
-        btnNewButton_2.setBounds(697, 489, 92, 30);
-        panel.add(btnNewButton_2);
+
+        updateBtn.setBounds(563, 641, 92, 30);
+        panel.add(updateBtn);
         
-        JButton btnNewButton_3 = new JButton("Edit");
-        btnNewButton_3.setBounds(578, 554, 92, 30);
-        panel.add(btnNewButton_3);
-        
-        JLabel lblNewLabel_1 = new JLabel("Name\r\n");
+        JLabel lblNewLabel_1 = new JLabel("Username");
         lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        lblNewLabel_1.setBounds(578, 226, 101, 26);
+        lblNewLabel_1.setBounds(578, 236, 101, 26);
         panel.add(lblNewLabel_1);
         
-        JLabel lblNewLabel_2 = new JLabel("Email");
+        JLabel lblNewLabel_2 = new JLabel("Password");
         lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        lblNewLabel_2.setBounds(578, 298, 102, 21);
+        lblNewLabel_2.setBounds(577, 309, 102, 21);
         panel.add(lblNewLabel_2);
         
         JLabel lblNewLabel_3 = new JLabel("Phone-Number");
         lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        lblNewLabel_3.setBounds(578, 379, 102, 21);
+        lblNewLabel_3.setBounds(578, 386, 102, 21);
         panel.add(lblNewLabel_3);
         
-        JLabel lblNewLabel_5 = new JLabel("Address");
+        JLabel lblNewLabel_5 = new JLabel("Role");
         lblNewLabel_5.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        lblNewLabel_5.setBounds(714, 379, 92, 21);
+        lblNewLabel_5.setBounds(578, 459, 92, 21);
         panel.add(lblNewLabel_5);
         
-        txtSearch = new JTextField();
-        txtSearch.setText("Search...");
-        txtSearch.setBounds(32, 102, 125, 30);
-        panel.add(txtSearch);
-        txtSearch.setColumns(10);
+        searchField = new JTextField();
+     
+        searchField.setBounds(32, 101, 161, 30);
+        panel.add(searchField);
+        searchField.setColumns(10);
+        searchField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String searchText = searchField.getText().trim();
+
+                
+                if (searchText.length() >= 3) {
+                    filterTable(searchText); 
+                } else {
+                    
+                    usersTable.setModel(DatabaseHelper.getTableData("users"));
+                    usersTable.getColumnModel().getColumn(4).setCellRenderer(new ImageRenderer());
+                }
+            }
+        });
+
+
         
         JLabel lblNewLabel_4 = new JLabel("Kerko");
         lblNewLabel_4.setBounds(32, 74, 82, 26);
         panel.add(lblNewLabel_4);
-       
-        btnNewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow = table.getSelectedRow();
-                if (selectedRow == -1) {
-                    JOptionPane.showMessageDialog(panel, "Please select a row to save.");
-                    return;
-                }
-
-                // Get edited values
-                String name = textField_4.getText();
-                String phone = textField_8.getText();
-                String address = textField_6.getText();
-                String email = textField_5.getText();
-
-                // Update JTable
-                table.setValueAt(name, selectedRow, 0);
-                table.setValueAt(phone, selectedRow, 1);
-                table.setValueAt(address, selectedRow, 2);
-                table.setValueAt(email, selectedRow, 3);
-
-                // Update database
-                updateDatabase(name, phone, address, email);
-            }
-        });
         
-        btnNewButton_3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow = table.getSelectedRow();
-                if (selectedRow == -1) {
-                    JOptionPane.showMessageDialog(panel, "Please select a row to edit.");
-                    return;
-                }
-
-                // Populate text fields with selected row data
-                textField_4.setText(table.getValueAt(selectedRow, 0).toString());
-                textField_8.setText(table.getValueAt(selectedRow, 1).toString());
-                textField_6.setText(table.getValueAt(selectedRow, 2).toString());
-                textField_5.setText(table.getValueAt(selectedRow, 3).toString());
-            }
-        });
-
-    }
         
- 
 
+    }
     
-    private void chooseImage() {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "png", "jpeg"));
-        int result = fileChooser.showOpenDialog(null);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            selectedFile = fileChooser.getSelectedFile();
-            JOptionPane.showMessageDialog(null, "Image Selected: " + selectedFile.getName());
-        }
+    private void refreshTable() {
+        DatabaseHelper dbHelper = new DatabaseHelper();
+        DefaultTableModel model = dbHelper.getTableData("users");
+        usersTable.setModel(model);
     }
 
-    
-    
-    private void insertusers() {
-        String name = textField_4.getText();
-        String phone = textField_8.getText();
-        String address = textField_6.getText();
-        String email = textField_5.getText();
+    private void filterTable(String searchText) {
         
-        if (name.isEmpty() || phone.isEmpty() || address.isEmpty() || email.isEmpty() || selectedFile == null) {
-            JOptionPane.showMessageDialog(null, "Please fill all fields and select an image.");
-            return;
-        }
+        String query = "SELECT * FROM users WHERE username LIKE ?";
 
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/brewstreet", "root", "root")) {
-            String sql = "INSERT INTO users (name, phone, address, email, image) VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.setString(1, name);
-            pst.setString(2, phone);
-            pst.setString(3, address); // Corrected here
-            pst.setString(4, email);
+        try {
+            Connection conn = DbConn.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            String searchPattern = "%" + searchText + "%";  
 
-            FileInputStream fis = new FileInputStream(selectedFile);
-            pst.setBinaryStream(5, fis, (int) selectedFile.length());
+            stmt.setString(1, searchPattern);
 
-            int rowsInserted = pst.executeUpdate();
-            if (rowsInserted > 0) {
-                JOptionPane.showMessageDialog(null, "User added successfully!");
-                loadTableData(table);  // Refresh the table after inserting data
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error inserting user.");
-        }
-    }
-
-    
-    
-    private void deleteFromDatabase(String name) {
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/brewstreet", "root", "root");
-             PreparedStatement stmt = conn.prepareStatement("DELETE FROM users WHERE name = ?")) {
-            
-            stmt.setString(1, name);
-            stmt.executeUpdate();
-            
-            JOptionPane.showMessageDialog(panel, "Product deleted successfully from database!");
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(panel, "Error deleting product: " + ex.getMessage());
-        }
-    }
-    private void loadTableData(JTable table) {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/brewstreet", "root", "root")) {
-            String sql = "SELECT name, phone, address, email, image FROM users";
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-
-            model.setRowCount(0);  // Clear existing rows
+            ResultSet rs = stmt.executeQuery();
+            DefaultTableModel model = new DefaultTableModel(new Object[]{"ID", "Username", "Phone", "Password", "Role", "Profile Picture"}, 0);
 
             while (rs.next()) {
-                String name = rs.getString("name");
-                String phone = rs.getString("phone");
-                String address = rs.getString("address");
-                String email = rs.getString("email");
-                
-                Blob imageBlob = (Blob) rs.getBlob("image");
-                byte[] imageBytes = imageBlob != null ? imageBlob.getBytes(1, (int) imageBlob.length()) : null;
+                Object[] row = new Object[6];
+                row[0] = rs.getInt("id");
+                row[1] = rs.getString("username");
+                row[2] = rs.getString("phone");
+                row[3] = rs.getString("password");
+                row[4] = rs.getString("role");
+                row[5] = rs.getBlob("profile_picture");  // Assuming you store image as a BLOB
 
-                model.addRow(new Object[]{name, phone, address, email, imageBytes});  // Add the row with the correct order
+                model.addRow(row);
             }
 
-            // Set the custom image renderer
-            setImageColumnRenderer(table);
+            usersTable.setModel(model);
+            usersTable.getColumnModel().getColumn(4).setCellRenderer(new ImageRenderer());
 
-            // Resize the row heights based on the image
-            for (int i = 0; i < table.getRowCount(); i++) {
-                byte[] imageBytes = (byte[]) table.getValueAt(i, 4);  // Image is in the 5th column (index 4)
-                if (imageBytes != null) {
-                    ImageIcon imageIcon = new ImageIcon(imageBytes);
-                    Image img = imageIcon.getImage();
-                    Image resizedImg = img.getScaledInstance(150, 200, Image.SCALE_SMOOTH);  
-                    int rowHeight = resizedImg.getHeight(null) + 100;  // Adjust row height
-                    table.setRowHeight(i, rowHeight);  
-                    int columnWidth = resizedImg.getWidth(null) + 90;  // Add padding to column width
-                    table.getColumnModel().getColumn(4).setPreferredWidth(columnWidth); 
-                }
-            }
-        } catch (Exception ex) {
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(panel, "Error loading data.");
+            JOptionPane.showMessageDialog(panel, "Error filtering table!");
         }
     }
 
-
-
-    private void setImageColumnRenderer(JTable table) {
-        table.getColumnModel().getColumn(4).setCellRenderer(new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                if (value instanceof byte[]) {
-                    byte[] imageBytes = (byte[]) value;
-                    if (imageBytes != null) {
-                        ImageIcon imageIcon = new ImageIcon(imageBytes);
-                        Image img = imageIcon.getImage();
-                        Image resizedImg = img.getScaledInstance(200, 200, Image.SCALE_SMOOTH);  // Resize image
-                        return new JLabel(new ImageIcon(resizedImg));
-                    }
-                }
-                return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            }
-    
-        });
-    
-
-   
-    }
-    private void updateDatabase(String name, String phone, String address, String email) {
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/brewstreet", "root", "root")) {
-            // SQL query to update based on the name
-            String sql = "UPDATE users SET phone = ?, address = ?, email = ? WHERE name = ?";
-            PreparedStatement pst = con.prepareStatement(sql);
-
-            // Remove leading and trailing spaces from the name (if any)
-            name = name.trim();
-
-            // Set the parameters
-            pst.setString(1, phone);   // Updating phone
-            pst.setString(2, address); // Updating address
-            pst.setString(3, email);   // Updating email
-            pst.setString(4, name);    // Using the trimmed name to find the user
-
-            // Execute the update
-            int rowsUpdated = pst.executeUpdate();
-            if (rowsUpdated > 0) {
-                JOptionPane.showMessageDialog(null, "User updated successfully!");
-            } else {
-                JOptionPane.showMessageDialog(null, "User not found or no changes made.");
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Database error.");
-        }
-    }
-
-
-
-    
-    
     
     public JPanel getPanel() {
         return panel;

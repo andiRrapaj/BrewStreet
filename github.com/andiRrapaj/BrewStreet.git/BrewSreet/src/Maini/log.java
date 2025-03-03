@@ -12,7 +12,7 @@ public class log {
     private JPanel container;
     private CardLayout cards;
 
-
+//
     public log(JPanel container, CardLayout cards) {
         this.container = container;
         this.cards = cards;

@@ -23,6 +23,9 @@ public class admindashboard {
         this.cards = cards;
     }
 
+    /**
+     * @wbp.parser.entryPoint
+     */
     public JPanel getPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(null);

@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import Maini.log;
 
 import java.io.File;
-import java.io.FileWriter;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -105,7 +105,6 @@ public class admpfp {
                chckbxNewCheckBox_1.setBounds(301, 501, 79, 31);
                panel.add(chckbxNewCheckBox_1);
                
-            // Create a JLabel for the profile picture
                JLabel lblNewLabel = new JLabel();
                lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 28));
                lblNewLabel.setBackground(new Color(255, 255, 255));
@@ -114,14 +113,7 @@ public class admpfp {
                lblNewLabel.setOpaque(true); // Make the background visible
                panel.add(lblNewLabel);
 
-//               // Load the initial image (smm.jpg) or the last saved image
-//               String savedImagePath = loadImagePath(); // Load the saved image path
-//               if (savedImagePath != null && !savedImagePath.isEmpty()) {
-//                   setImageToLabel(lblNewLabel, savedImagePath); // Set the saved image
-//               } else {
-//                   // If no saved image, load the default image (smm.jpg)
-//                   setImageToLabel(lblNewLabel, "smm.jpg"); // Replace with the path to your initial image
-//               }
+
 
                // Create a JButton to change the image
                JButton btnNewButton_3 = new JButton("Edit");

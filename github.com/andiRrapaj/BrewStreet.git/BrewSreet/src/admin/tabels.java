@@ -74,7 +74,7 @@ public class tabels{
         JButton btnNewButton_1 = new JButton("New button");
         btnNewButton_1.setBounds(473, 579, 85, 21);
         panel.add(btnNewButton_1);
-        
+        //
         JButton btnNewButton_2 = new JButton("New button");
         btnNewButton_2.setBounds(618, 517, 85, 21);
         panel.add(btnNewButton_2);

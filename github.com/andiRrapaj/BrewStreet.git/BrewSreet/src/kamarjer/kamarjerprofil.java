@@ -32,6 +32,8 @@ public class kamarjerprofil {
     private JPasswordField passwordField;
     private JPasswordField passwordField_1;
 
+    
+    //
     public kamarjerprofil(JPanel container, CardLayout cards) {
         this.container = container;
         this.cards = cards;

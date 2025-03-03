@@ -14,7 +14,7 @@ public class loginkamarjer{
     private JTextField textField;
     private JTextField textField_1;
     private  JPanel panel_1 = new JPanel();
-
+//
 
     public loginkamarjer(JPanel container, CardLayout cards) {
         this.container = container;
