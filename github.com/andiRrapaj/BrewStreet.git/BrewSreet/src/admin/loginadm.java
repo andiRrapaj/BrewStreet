@@ -34,8 +34,9 @@ public class loginadm {
         
         
         JButton logInBTN = new JButton("Log-in");
+        logInBTN.setBackground(new Color(255, 253, 232));
         logInBTN.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        logInBTN.setBounds(125, 469, 165, 52);
+        logInBTN.setBounds(125, 502, 125, 34);
         logInBTN.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -75,24 +76,26 @@ public class loginadm {
         
         
         usernameField = new JTextField();
-        usernameField.setBounds(144, 283, 251, 34);
+        usernameField.setBounds(65, 347, 185, 34);
         panel.add(usernameField);
         usernameField.setColumns(10);
         
 
         passwordField = new JPasswordField();
-        passwordField.setBounds(144, 351, 251, 34);
+        passwordField.setBounds(65, 415, 185, 34);
         panel.add(passwordField);
         
         JLabel lblNewLabel = new JLabel("Please Login to Admin Dashboard!");
+        lblNewLabel.setForeground(new Color(255, 255, 255));
+        lblNewLabel.setBackground(new Color(255, 255, 255));
         lblNewLabel.setFont(new Font("Tahoma", Font.ITALIC, 15));
-        lblNewLabel.setBounds(123, 197, 251, 34);
+        lblNewLabel.setBounds(50, 260, 309, 44);
         panel.add(lblNewLabel);
         
         JLabel lblNewLabel_2 = new JLabel("Welcome");
         lblNewLabel_2.setForeground(new Color(192, 192, 192));
-        lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 29));
-        lblNewLabel_2.setBounds(110, 108, 145, 44);
+        lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 32));
+        lblNewLabel_2.setBounds(96, 91, 159, 61);
         panel.add(lblNewLabel_2);
         
    
@@ -104,9 +107,9 @@ public class loginadm {
         
         
         JButton btnNewButton_1 = new JButton("Back");
-        btnNewButton_1.setBackground(new Color(128, 128, 128));
+        btnNewButton_1.setBackground(new Color(255, 253, 232));
         btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        btnNewButton_1.setBounds(905, 10, 85, 21);
+        btnNewButton_1.setBounds(879, 30, 85, 21);
         btnNewButton_1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

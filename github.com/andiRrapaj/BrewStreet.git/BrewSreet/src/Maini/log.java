@@ -20,10 +20,10 @@ public class log {
         panel = new JPanel();
         panel.setLayout(null);
         panel.setBounds(0, 0, 1000, 800); 
-        panel.setBackground(new Color(255, 255, 255)); 
+        panel.setBackground(new Color(255, 254, 242)); 
             
     JButton btnNewButton = new JButton("Admin");
-    btnNewButton.setBackground(new Color(192, 192, 192));
+    btnNewButton.setBackground(new Color(255, 255, 249));
     btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
     btnNewButton.setBounds(141, 474, 123, 41);
     btnNewButton.addActionListener(new ActionListener() {
@@ -38,7 +38,7 @@ public class log {
     panel.add(btnNewButton);
     
     JButton btnNewButton_1 = new JButton("Rezervimet");
-    btnNewButton_1.setBackground(new Color(192, 192, 192));
+    btnNewButton_1.setBackground(new Color(255, 255, 249));
     btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
     btnNewButton_1.setBounds(390, 474, 123, 41);
     btnNewButton_1.addActionListener(new ActionListener() {
@@ -51,7 +51,7 @@ public class log {
     panel.add(btnNewButton_1);
     
     JButton btnNewButton_2 = new JButton("Kamarier");
-    btnNewButton_2.setBackground(new Color(192, 192, 192));
+    btnNewButton_2.setBackground(new Color(255, 255, 249));
     btnNewButton_2.setFont(new Font("Tahoma", Font.PLAIN, 19));
     btnNewButton_2.setBounds(640, 474, 123, 41);
     btnNewButton_2.addActionListener(new ActionListener() {
@@ -89,7 +89,7 @@ public class log {
     
     JLabel lblNewLabel = new JLabel("BrewStreet");
     lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 27));
-    lblNewLabel.setBounds(376, 43, 157, 41);
+    lblNewLabel.setBounds(390, 49, 157, 41);
     panel.add(lblNewLabel);
 
     

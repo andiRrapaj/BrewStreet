@@ -6,6 +6,7 @@ import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
 
 import Maini.DbConn;
+import Maini.log;
 
 import javax.swing.*;
 
@@ -36,7 +37,7 @@ public class rezervimeloged {
         panel = new JPanel();
         panel.setLayout(null);
         panel.setBounds(0, 0, 1000, 800); 
-        panel.setBackground(new Color(192, 192, 192)); 
+        panel.setBackground(new Color(255, 255, 247)); 
         
         
         reservationForms = new ReservationForms();
@@ -52,8 +53,10 @@ public class rezervimeloged {
         panel.add(refreshBtn);
    
         
-        JButton backBtn = new JButton("Back");
-        backBtn.setBounds(890, 10, 100, 32);
+        JButton backBtn = new JButton("<-Back");
+        backBtn.setBackground(new Color(255, 255, 255));
+        backBtn.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        backBtn.setBounds(844, 19, 100, 23);
        
         backBtn.addActionListener(new ActionListener() {
             @Override
@@ -65,7 +68,24 @@ public class rezervimeloged {
         
         panel.add(backBtn);
         
-        
+        JLabel imageLabel = new JLabel();
+
+        // Set the bounds for the JLabel (x, y, width, height)
+        imageLabel.setBounds(10, 11, 173, 70); // Adjusted bounds to match the resized image
+
+        // Load the image
+        ImageIcon icon = new ImageIcon(log.class.getResource("/img/rcp.png")); // Replace with your image path
+        Image image = icon.getImage(); // Get the image from the icon
+
+        // Resize the image to 800x300
+        Image resizedImage = image.getScaledInstance(173, 70, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(resizedImage); // Create a new ImageIcon with the resized image
+
+        // Set the resized image to the JLabel
+        imageLabel.setIcon(resizedIcon);
+
+        // Add the JLabel to the panel
+        panel.add(imageLabel);
 //     
      
         JScrollPane tablescrollPane = new JScrollPane();
@@ -97,6 +117,8 @@ public class rezervimeloged {
        
         
         JButton addBtn = new JButton("Add +");
+        addBtn.setBackground(new Color(255, 255, 221));
+        addBtn.setFont(new Font("Tahoma", Font.PLAIN, 20));
         addBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
