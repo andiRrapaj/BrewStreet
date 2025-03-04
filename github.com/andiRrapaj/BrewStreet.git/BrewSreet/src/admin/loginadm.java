@@ -12,7 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.awt.*;
-//00
+
 
 public class loginadm {
     private JPanel panel;

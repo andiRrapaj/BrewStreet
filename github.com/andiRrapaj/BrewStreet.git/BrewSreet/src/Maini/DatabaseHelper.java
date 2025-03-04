@@ -8,7 +8,7 @@ import java.sql.*;
 import javax.imageio.ImageIO;
 
 public class DatabaseHelper {
-    
+    //
     // Method to fetch table data dynamically
 	public static DefaultTableModel getTableData(String tableName) {
 	    DefaultTableModel model = null;

@@ -28,12 +28,15 @@ import java.sql.Blob;
 		        panel.setBounds(0, 0, 1000, 800);
 		        panel.setBackground(new Color(247, 244, 215));
 		        panel.setLayout(null);
-		
-		        kamarjerframe kamarjerFrame = new kamarjerframe(container, cards, 1);
-		        container.add(kamarjerFrame.getPanel(), "kamarjerframe");
+		        kamarjerFrame = new kamarjerframe();
+		        
 		     
 	
 		        JButton button1 = new JButton();
+		        button1.addActionListener(e -> {
+		            kamarjerFrame.setTableId(1);  // Assign Table 1
+		            cards.show(container, "kamarjerframe");
+		        });
 		        button1.setBounds(805, 108, 85, 86);
 		        button1.setBackground(new Color(255, 200, 100));
 		        button1.setForeground(Color.BLACK);
@@ -41,10 +44,7 @@ import java.sql.Blob;
 		        button1.setOpaque(false);
 		        button1.setContentAreaFilled(false);
 		       // button1.setBorderPainted(false);
-		        button1.addActionListener(e -> {
-		            kamarjerFrame.setButtonId(1);
-		            cards.show(container, "kamarjerframe");
-		        });
+		        
 		        panel.add(button1);
 		
 		         
@@ -57,9 +57,10 @@ import java.sql.Blob;
 		        button2.setContentAreaFilled(false);
 		        button2.setBorderPainted(false);
 		        button2.addActionListener(e -> {
-		            kamarjerFrame.setButtonId(2);  
+		            kamarjerFrame.setTableId(2);  
 		            cards.show(container, "kamarjerframe");
 		        });
+		        
 		        panel.add(button2);
 		
 		         
@@ -72,9 +73,10 @@ import java.sql.Blob;
 		        button3.setContentAreaFilled(false);
 		        button3.setBorderPainted(false);
 		        button3.addActionListener(e -> {
-		            kamarjerFrame.setButtonId(3);  
+		            kamarjerFrame.setTableId(3);  
 		            cards.show(container, "kamarjerframe");
 		        });
+		        
 		        panel.add(button3);
 		
 		        
@@ -86,8 +88,9 @@ import java.sql.Blob;
 		        button4.setOpaque(false);
 		        button4.setContentAreaFilled(false);
 		        button4.setBorderPainted(false);
+		        
 		        button4.addActionListener(e -> {
-		            kamarjerFrame.setButtonId(4);  
+		            kamarjerFrame.setTableId(4);  
 		            cards.show(container, "kamarjerframe");
 		        });
 		        panel.add(button4);
@@ -100,9 +103,10 @@ import java.sql.Blob;
 		        button5.setContentAreaFilled(false);
 		        button5.setBorderPainted(false);
 		        button5.addActionListener(e -> {
-		            kamarjerFrame.setButtonId(5);  
+		            kamarjerFrame.setTableId(5);  
 		            cards.show(container, "kamarjerframe");
 		        });
+		        
 		        panel.add(button5);
 		
 		         
@@ -115,9 +119,10 @@ import java.sql.Blob;
 		        button6.setContentAreaFilled(false);
 		        button6.setBorderPainted(false);
 		        button6.addActionListener(e -> {
-		            kamarjerFrame.setButtonId(6);  
+		            kamarjerFrame.setTableId(6);  
 		            cards.show(container, "kamarjerframe");
 		        });
+		        
 		        panel.add(button6);
 		
 		         
@@ -130,9 +135,10 @@ import java.sql.Blob;
 		        button7.setContentAreaFilled(false);
 		        button7.setBorderPainted(false);
 		        button7.addActionListener(e -> {
-		            kamarjerFrame.setButtonId(7);  
+		            kamarjerFrame.setTableId(7);  
 		            cards.show(container, "kamarjerframe");
 		        });
+		        
 		        panel.add(button7);
 		
 		         
@@ -145,9 +151,10 @@ import java.sql.Blob;
 		        button8.setContentAreaFilled(false);
 		        button8.setBorderPainted(false);
 		        button8.addActionListener(e -> {
-		            kamarjerFrame.setButtonId(8);  
+		            kamarjerFrame.setTableId(8);  
 		            cards.show(container, "kamarjerframe");
 		        });
+		        
 		        panel.add(button8);
 		
 		         
@@ -160,9 +167,10 @@ import java.sql.Blob;
 		        button9.setContentAreaFilled(false);
 		        button9.setBorderPainted(false);
 		        button9.addActionListener(e -> {
-		            kamarjerFrame.setButtonId(9);  
+		            kamarjerFrame.setTableId(9);  
 		            cards.show(container, "kamarjerframe");
 		        });
+		        
 		        panel.add(button9);
 		
 		         
@@ -175,9 +183,10 @@ import java.sql.Blob;
 		        button10.setContentAreaFilled(false);
 		        button10.setBorderPainted(false);
 		        button10.addActionListener(e -> {
-		            kamarjerFrame.setButtonId(10);  
+		            kamarjerFrame.setTableId(10);  
 		            cards.show(container, "kamarjerframe");
 		        });
+		        
 		        panel.add(button10);
 		
 		         
@@ -272,7 +281,19 @@ import java.sql.Blob;
 		        panel.add(label3);
 		    }
 		
-		    
+		    public class kamarjerframe {
+		        private int tableId;
+
+		        public void setTableId(int tableId) {
+		            this.tableId = tableId;
+		            System.out.println("Button ID set to: " + tableId);
+		        }
+
+		        public int getTableId() {
+		            return tableId;
+		        }
+		    }
+
 		    private static ImageIcon resizeImage(ImageIcon icon, int width, int height) {
 		        Image img = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
 		        return new ImageIcon(img);

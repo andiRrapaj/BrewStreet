@@ -21,14 +21,14 @@ public class kamarjerframe {
     private JTextField textField_3;
     private static JTextField txtSearch;
 
-    private int buttonId; 
+    private int tableId; 
  
-    public kamarjerframe(JPanel container, CardLayout cards,int buttonId) {
+    public kamarjerframe(JPanel container, CardLayout cards,int tableId) {
         this.container = container;
         this.cards = cards;
-        this.buttonId = buttonId; // Store the button ID
+        this.tableId = tableId; // Store the button ID
       
-       
+        System.out.println("Button ID set to: " + tableId);
 
         panel = new JPanel();
         panel.setLayout(null);
@@ -44,7 +44,6 @@ public class kamarjerframe {
         scrollPane1.setBounds(363, 105, 297, 430);
         panel.add(scrollPane1);
 
-        loadImagesPanel1(panel);
 
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new GridLayout(0, 2, 10, 10));
@@ -122,16 +121,8 @@ public class kamarjerframe {
     JButton btnPay = new JButton("Pay");
     btnPay.setFont(new Font("Tahoma", Font.PLAIN, 18));
     btnPay.setBounds(696, 585, 112, 124);
-    btnPay.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            saveDataToPayedTable();
-        }
-    });
+    
     panel.add(btnPay);
-
-    // Other UI components...
-
 
         JButton btnNewButton_4 = new JButton("Print");
         btnNewButton_4.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -140,18 +131,7 @@ public class kamarjerframe {
 
         JButton btnNewButton_5 = new JButton("Delete");
         btnNewButton_5.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        btnNewButton_5.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow = table.getSelectedRow();
-                if (selectedRow != -1) {
-                    DefaultTableModel model = (DefaultTableModel) table.getModel();
-                    model.removeRow(selectedRow);
-                } else {
-                    JOptionPane.showMessageDialog(panel, "Please select a row to delete.");
-                }
-            }
-        });
+        
         btnNewButton_5.setBounds(559, 555, 101, 36);
         panel.add(btnNewButton_5);
 
@@ -175,91 +155,7 @@ public class kamarjerframe {
         btnNewButton.addActionListener(e -> cards.show(container, "tables1"));
         panel.add(btnNewButton);
     }
-    private void saveDataToPayedTable() {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        int rowCount = model.getRowCount();
-
-        String sql = "INSERT INTO payed (button_id, item_id, price, quantity, item_name) VALUES (?, ?, ?, ?, ?)";
-
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/brewstreet", "root", "root");
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            for (int i = 0; i < rowCount; i++) {
-                int itemId = (int) model.getValueAt(i, 0); // ID
-                double price = (double) model.getValueAt(i, 1); // Price
-                int quantity = (int) model.getValueAt(i, 2); // Quantity
-                String itemName = (String) model.getValueAt(i, 3); // Item Name
-                int btnId = buttonId; 
-
-                pstmt.setInt(1, buttonId); // Use the button ID
-                pstmt.setInt(2, itemId);
-                pstmt.setDouble(3, price);
-                pstmt.setInt(4, quantity);
-                pstmt.setString(5, itemName);
-
-                pstmt.executeUpdate();
-            }
-
-            JOptionPane.showMessageDialog(panel, "Data saved to 'payed' table successfully!");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(panel, "Error saving data to the 'payed' table.");
-        }
-    }
-    // Method to set the button ID
-    public void setButtonId(int buttonId) {
-        this.buttonId = buttonId;
-        System.out.println("Button ID set to: " + buttonId); // Debugging: Print the button ID
-    }
-
-    // Rest of your existing methods...
-    private static void loadImagesPanel1(JPanel panel) {
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/brewstreet", "root", "root")) {
-            String sql = "SELECT id, image, name, price, quantity FROM products";
-            PreparedStatement pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-
-            JPanel imagePanel = new JPanel();
-            imagePanel.setLayout(new GridLayout(0, 3, 10, 20));
-
-            while (rs.next()) {
-                final int id = rs.getInt("id");
-                final String name = rs.getString("name");
-                final double price = rs.getDouble("price");
-                final int quantity = rs.getInt("quantity");
-                Blob imageBlob = (Blob) rs.getBlob("image");
-                byte[] imageBytes = imageBlob != null ? imageBlob.getBytes(1, (int) imageBlob.length()) : null;
-
-                if (imageBytes != null) {
-                    ImageIcon imageIcon = new ImageIcon(imageBytes);
-                    Image img = imageIcon.getImage();
-                    Image resizedImg = img.getScaledInstance(100, 150, Image.SCALE_SMOOTH);
-                    JLabel imageLabel = new JLabel(new ImageIcon(resizedImg));
-
-                    imageLabel.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            if (table.getModel() instanceof DefaultTableModel) {
-                                DefaultTableModel model = (DefaultTableModel) table.getModel();
-                                model.addRow(new Object[]{id, price, quantity, name});
-                            } else {
-                                JOptionPane.showMessageDialog(panel, "Table model is not of type DefaultTableModel");
-                            }
-                        }
-                    });
-
-                    imagePanel.add(imageLabel);
-                }
-            }
-
-            JScrollPane scrollPane = new JScrollPane(imagePanel);
-            scrollPane.setBounds(10, 105, 343, 555);
-            panel.add(scrollPane);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(panel, "Error loading images.");
-        }
-    }
+   
 
     public JPanel getPanel() {
         return panel;

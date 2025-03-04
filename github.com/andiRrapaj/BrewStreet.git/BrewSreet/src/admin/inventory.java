@@ -27,7 +27,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.awt.*;
-
+//s
 public class inventory{
     private JPanel panel;
     private JPanel container;

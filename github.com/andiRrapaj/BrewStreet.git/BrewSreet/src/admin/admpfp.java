@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.awt.*;
-
+//s
 public class admpfp {
     private static final String CONFIG_FILE = null;
 	private JPanel container;
