@@ -239,13 +239,15 @@ import java.sql.SQLException;
 	                      
 	                        Blob imageBlob = rs.getBlob(i);
 	                        byte[] imageBytes = (imageBlob != null) ? imageBlob.getBytes(1, (int) imageBlob.length()) : null;
-
 	                        if (imageBytes != null) {
+	                            System.out.println("Image size: " + imageBytes.length);
 	                            ImageIcon img = new ImageIcon(imageBytes);
 	                            Image scaledImg = img.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 	                            rowData[i - 1] = new ImageIcon(scaledImg); 
+
 	                        } else {
 	                            rowData[i - 1] = "No Image"; 
+
 	                        }
 	                    } else {
 	                        rowData[i - 1] = rs.getObject(i); 
@@ -254,7 +256,8 @@ import java.sql.SQLException;
 	                model.addRow(rowData);
 	            }
 
-	            
+	       
+
 	           
 
 	        } catch (SQLException ex) {

@@ -30,9 +30,10 @@ public class admindashboard {
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setBounds(200, 50, 999, 750);
-        panel.setBackground(new Color(130, 159, 96));
+        panel.setBackground(new Color(255, 255, 238));
 
         layeredPane = new JPanel();
+        layeredPane.setBackground(new Color(255, 255, 238));
         layeredPane.setBounds(148, 50, 851, 719);
         layeredCards = new CardLayout();
         layeredPane.setLayout(layeredCards);
@@ -60,42 +61,42 @@ public class admindashboard {
         layeredPane.add(adminbills, "adminbills");
 
         JButton btn1 = new JButton("Bills & Orders");
-        btn1.setBounds(20, 203, 128, 30);
+        btn1.setBounds(20, 216, 128, 30);
         btn1.addActionListener(e -> changePanel(btn1, "adminbills"));
         panel.add(btn1);
 
         JButton btn2 = new JButton("Manage Users");
-        btn2.setBounds(20, 270, 128, 30);
+        btn2.setBackground(new Color(255, 255, 238));
+        btn2.setBounds(20, 285, 128, 30);
         btn2.addActionListener(e -> changePanel(btn2, "adminusers"));
         panel.add(btn2);
 
         JButton btn3 = new JButton("Inventory");
-        btn3.setBounds(20, 339, 128, 30);
+        btn3.setBackground(new Color(255, 255, 238));
+        btn3.setBounds(20, 355, 128, 30);
         btn3.addActionListener(e -> changePanel(btn3, "inventory"));
         panel.add(btn3);
 
-        JButton btn4 = new JButton("Manage Tables");
-        btn4.setBounds(20, 402, 128, 30);
-        btn4.addActionListener(e -> changePanel(btn4, "tabels"));
-        panel.add(btn4);
-
         JButton btn5 = new JButton("Manage Products");
-        btn5.setBounds(20, 461, 128, 30);
+        btn5.setBackground(new Color(255, 255, 238));
+        btn5.setBounds(20, 420, 128, 30);
         btn5.addActionListener(e -> changePanel(btn5, "products"));
         panel.add(btn5);
 
         JPanel panel_1 = new JPanel();
-        panel_1.setBackground(new Color(119, 135, 136));
+        panel_1.setBackground(new Color(78, 78, 78));
         panel_1.setBounds(0, 0, 999, 50);
         panel.add(panel_1);
         panel_1.setLayout(null);
 
         JButton btnNewButton = new JButton("Profile");
+        btnNewButton.setBackground(new Color(240, 240, 240));
         btnNewButton.setBounds(857, 10, 85, 21);
         btnNewButton.addActionListener(e -> cards.show(container, "admpfp"));
         panel_1.add(btnNewButton);
 
         JButton btnNewButton_1 = new JButton("Log Out");
+        btnNewButton_1.setBackground(new Color(240, 240, 240));
         btnNewButton_1.setBounds(736, 10, 85, 21);
         btnNewButton_1.addActionListener(e -> cards.show(container, "loginadm"));
         panel_1.add(btnNewButton_1);
@@ -117,7 +118,7 @@ public class admindashboard {
         if (selectedButton != null) {
             selectedButton.setBackground(originalColor);
         }
-        button.setBackground(Color.LIGHT_GRAY);
+        button.setBackground(new Color(255, 255, 238));
         selectedButton = button;
         layeredCards.show(layeredPane, panelName);
     }

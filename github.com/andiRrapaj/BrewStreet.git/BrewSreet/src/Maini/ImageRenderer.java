@@ -1,25 +1,31 @@
 package Maini;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
-import java.awt.*;
-import java.sql.Blob;
-import java.sql.SQLException;
-//
+
 public class ImageRenderer extends DefaultTableCellRenderer {
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        if (value instanceof Blob) {
-            Blob blob = (Blob) value;
+        JLabel label = new JLabel();
+        label.setHorizontalAlignment(JLabel.CENTER);
+
+        if (value instanceof byte[]) {
             try {
-                byte[] imgBytes = blob.getBytes(1, (int) blob.length());
-                ImageIcon imageIcon = new ImageIcon(imgBytes);
-                JLabel label = new JLabel(imageIcon);
-                return label;
-            } catch (SQLException e) {
+                byte[] imageBytes = (byte[]) value;
+                ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+                BufferedImage img = ImageIO.read(bis);
+                if (img != null) {
+                    ImageIcon icon = new ImageIcon(img.getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+                    label.setIcon(icon);
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        return label;
     }
 }

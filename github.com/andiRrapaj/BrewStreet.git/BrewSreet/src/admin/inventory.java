@@ -397,36 +397,45 @@ public class inventory{
     }
     
     public void getTableContent() {
-        
         try (Connection conn = DbConn.getConnection();
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM inventory");
              ResultSet rs = stmt.executeQuery()) {
 
-            
             DefaultTableModel newModel = new DefaultTableModel();
             int columnCount = rs.getMetaData().getColumnCount();
 
             for (int i = 1; i <= columnCount; i++) {
-                newModel.addColumn(rs.getMetaData().getColumnName(i)); 
+                newModel.addColumn(rs.getMetaData().getColumnName(i));
             }
 
-            
             while (rs.next()) {
                 Object[] rowData = new Object[columnCount];
                 for (int i = 1; i <= columnCount; i++) {
-                    rowData[i - 1] = rs.getObject(i); 
+                    if (rs.getMetaData().getColumnType(i) == java.sql.Types.BLOB) {
+                        Blob blob = rs.getBlob(i);
+                        if (blob != null) {
+                            rowData[i - 1] = blob.getBytes(1, (int) blob.length());
+                        } else {
+                            rowData[i - 1] = null;
+                        }
+                    } else {
+                        rowData[i - 1] = rs.getObject(i);
+                    }
                 }
                 newModel.addRow(rowData);
             }
 
-            
             inventoryTable.setModel(newModel);
 
+            // Set Image Renderer (assuming image column is index 4)
+            inventoryTable.getColumnModel().getColumn(4).setCellRenderer(new ImageRenderer());
+            inventoryTable.setRowHeight(50);
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(panel, "Error loading inventory data.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     private void filterTable() {
         String searchText = txtSearch.getText().trim().toLowerCase();

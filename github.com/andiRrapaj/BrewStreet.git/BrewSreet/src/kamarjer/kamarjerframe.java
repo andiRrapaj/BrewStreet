@@ -2,9 +2,13 @@ package kamarjer;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import Maini.ImageRenderer;
+
 import java.sql.Blob;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -35,14 +39,21 @@ public class kamarjerframe {
         panel.setBounds(0, 0, 1000, 800);
         panel.setBackground(new Color(234, 228, 210));
 
-        String[] columnNames = {"ID", "Price", "Quantity", "Item"};
-        Object[][] data = {};
-        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        String[] columnNames = {"Image"};
+        DefaultTableModel model = new DefaultTableModel(null, columnNames);
         table = new JTable(model);
+        
+       
+        table.getColumn("Image").setCellRenderer(new ImageRenderer());
 
-        JScrollPane scrollPane1 = new JScrollPane(table);
-        scrollPane1.setBounds(363, 105, 297, 430);
-        panel.add(scrollPane1);
+
+        
+    
+        JScrollPane scrollPane11 = new JScrollPane(table);
+        scrollPane11.setBounds(363, 105, 297, 430);
+        
+        panel.add(scrollPane11);
+        loadImagesFromDatabase(container);
 
 
         JPanel contentPanel = new JPanel();
@@ -123,7 +134,20 @@ public class kamarjerframe {
     btnPay.setBounds(696, 585, 112, 124);
     
     panel.add(btnPay);
+    JPanel imagePanel = new JPanel();
+    imagePanel.setLayout(new GridLayout(0, 2, 10, 10)); // 2 images per row with gaps
+    imagePanel.setPreferredSize(new Dimension(2 * 150 + 1 * 10, 430)); // Adjust width for 2 images per row
 
+    panel.add(imagePanel);
+
+    JScrollPane scrollPane = new JScrollPane(imagePanel);
+    scrollPane.setBounds(22, 105, 2 * 150 + 1 * 10, 430); // Same width as imagePanel
+    panel.add(scrollPane);
+
+
+
+    loadImagesFromDatabase(imagePanel);
+    
         JButton btnNewButton_4 = new JButton("Print");
         btnNewButton_4.setFont(new Font("Tahoma", Font.PLAIN, 18));
         btnNewButton_4.setBounds(833, 585, 112, 124);
@@ -156,7 +180,55 @@ public class kamarjerframe {
         panel.add(btnNewButton);
     }
    
+    private void loadImagesFromDatabase(JPanel imagePanel) {
+        System.out.println("Loading images from database...");
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/brewstreet2", "root", "root");
+            String sql = "SELECT image FROM products";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
 
+            // Clear previous images
+            imagePanel.removeAll();
+
+            while (rs.next()) {
+                Blob blob = rs.getBlob("image");
+                byte[] imageBytes = null;
+                if (blob != null) {
+                    imageBytes = blob.getBytes(1, (int) blob.length());
+                } else {
+                    imageBytes = getDefaultImage();  // Use a default image if null
+                }
+
+                // Create ImageIcon and add it to a JLabel
+                ImageIcon imageIcon = new ImageIcon(imageBytes);
+                Image img = imageIcon.getImage();
+                Image scaledImg = img.getScaledInstance(150, 150, Image.SCALE_SMOOTH);  // Resize the image
+                imageIcon = new ImageIcon(scaledImg);
+                
+                JLabel imageLabel = new JLabel(imageIcon);
+                imagePanel.add(imageLabel);  // Add the image to the panel
+            }
+
+            // Refresh the panel after loading all images
+            imagePanel.revalidate();
+            imagePanel.repaint();
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private byte[] getDefaultImage() {
+        // Return a default image byte array (replace with your own logic)
+        return new byte[0];
+    }
+
+    
     public JPanel getPanel() {
         return panel;
     }
