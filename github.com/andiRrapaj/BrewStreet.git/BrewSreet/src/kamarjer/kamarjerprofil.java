@@ -15,6 +15,9 @@ import java.sql.SQLException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import Maini.DbConn;
+import Maini.log;
+
 
 //
 public class kamarjerprofil {
@@ -30,15 +33,16 @@ public class kamarjerprofil {
    
     private JTable table;
     private JPasswordField passwordField;
-    private JPasswordField passwordField_1;
-
+    private int userId;
     
     //
-    public kamarjerprofil(JPanel container, CardLayout cards) {
-        this.container = container;
+    public kamarjerprofil(JPanel container, CardLayout cards, int userId) {
+        this.userId = userId;
+    	this.container = container;
         this.cards = cards;
     }
-    /**
+    
+	/**
      * @wbp.parser.entryPoint
      */
     public JPanel getPanel() {
@@ -49,7 +53,7 @@ public class kamarjerprofil {
         
         
         String[] columnNames = {"Name", "1", "2", "3", "4"};
-
+        		System.out.println("hiii" + userId);
                
 
                DefaultTableModel model = new DefaultTableModel( columnNames, 0);
@@ -111,26 +115,27 @@ public class kamarjerprofil {
                panel.add(btnNewButton_4);
                
                passwordField = new JPasswordField();
-               passwordField.setBounds(151, 450, 106, 23);
+               passwordField.setBounds(151, 483, 106, 23);
                panel.add(passwordField);
                
-               passwordField_1 = new JPasswordField();
-               passwordField_1.setBounds(151, 483, 106, 23);
-               panel.add(passwordField_1);
-               
-               JLabel lblNewLabel_6 = new JLabel("Old Password");
-               lblNewLabel_6.setFont(new Font("Tahoma", Font.PLAIN, 13));
-               lblNewLabel_6.setBounds(42, 451, 99, 18);
-               panel.add(lblNewLabel_6);
-               
-               JLabel lblNewLabel_7 = new JLabel("New Password");
+               JLabel lblNewLabel_7 = new JLabel("Password");
                lblNewLabel_7.setFont(new Font("Tahoma", Font.PLAIN, 13));
                lblNewLabel_7.setBounds(42, 482, 99, 23);
                panel.add(lblNewLabel_7);
                
-               JButton btnNewButton_7 = new JButton("Save");
-               btnNewButton_7.setBounds(302, 484, 85, 21);
-               panel.add(btnNewButton_7);
+               JButton btnSave = new JButton("Save");
+               btnSave.setBounds(302, 484, 85, 21);
+               panel.add(btnSave);
+               
+               loadPassword();
+
+               // Save button action
+               btnSave.addActionListener(new ActionListener() {
+                   @Override
+                   public void actionPerformed(ActionEvent e) {
+                       updatePassword();
+                   }
+               });
                
                JLabel lblNewLabel_8 = new JLabel("Password Configuration");
                lblNewLabel_8.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -162,8 +167,8 @@ public class kamarjerprofil {
                // Set the bounds for the JLabel (x, y, width, height)
                imageLabel.setBounds(0, 0, 999, 379); // Adjusted bounds to match the resized image
 
-               // Load the image
-               ImageIcon icon = new ImageIcon("sm.jpg"); // Replace with your image path
+               
+               ImageIcon icon = new ImageIcon(log.class.getResource("/img/sm.jpg")); // Replace with your image path
                Image image = icon.getImage(); // Get the image from the icon
 
                // Resize the image to 800x300
@@ -178,4 +183,40 @@ public class kamarjerprofil {
         
         return panel;
     }
+    
+    private void loadPassword() {
+        try (Connection conn = DbConn.getConnection()) {
+            String query = "SELECT password FROM users WHERE id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                passwordField.setText(rs.getString("password"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updatePassword() {
+        String newPassword = new String(passwordField.getPassword());
+
+        try (Connection conn = DbConn.getConnection()) {
+            String query = "UPDATE users SET password = ? WHERE id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, newPassword);
+            pstmt.setInt(2, userId);
+            int rowsUpdated = pstmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                JOptionPane.showMessageDialog(null, "Password updated successfully!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Failed to update password!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
+

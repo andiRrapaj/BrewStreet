@@ -15,10 +15,12 @@ public class loginkamarjer {
     private CardLayout cards;
     private JComboBox<String> usernameComboBox;
     private JPasswordField passwordField;
+    private int userId; // Store the logged-in user's ID
 
     public loginkamarjer(JPanel container, CardLayout cards) {
         this.container = container;
         this.cards = cards;
+        this.userId = -1; // Default to -1 (no user logged in)
 
         panel = new JPanel();
         panel.setLayout(null);
@@ -36,7 +38,11 @@ public class loginkamarjer {
                 char[] passwordChars = passwordField.getPassword();
                 String password = new String(passwordChars);
                 if (validateLogin(selectedUser, password)) {
-                    cards.show(container, "tables1");
+                    // Pass the user ID to the next panel
+                    kamarjerprofil profilePanel = new kamarjerprofil(container, cards, userId);
+                    container.add(profilePanel.getPanel(), "kamarjerprofil");
+
+                    cards.show(container, "kamarjerprofil");
                 } else {
                     JOptionPane.showMessageDialog(panel, "Invalid login credentials.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -75,39 +81,9 @@ public class loginkamarjer {
         lblNewLabel_2.setBounds(554, 458, 75, 24);
         panel.add(lblNewLabel_2);
 
-        JLabel imageLabel1 = new JLabel();
-        imageLabel1.setBounds(0, 0, 495, 811);
-        ImageIcon icon1 = new ImageIcon(log.class.getResource("/img/km.jpg"));
-        Image image1 = icon1.getImage();
-        Image resizedImage1 = image1.getScaledInstance(495, 811, Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon1 = new ImageIcon(resizedImage1);
-        imageLabel1.setIcon(resizedIcon1);
-        panel.add(imageLabel1);
-
-        JButton btnNewButton_1 = new JButton("<-Back");
-        btnNewButton_1.setBackground(new Color(148, 148, 148));
-        btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        btnNewButton_1.setBounds(872, 10, 85, 21);
-        btnNewButton_1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cards.show(container, "log");
-            }
-        });
-        panel.add(btnNewButton_1);
-
         passwordField = new JPasswordField();
         passwordField.setBounds(643, 457, 136, 32);
         panel.add(passwordField);
-
-        passwordField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    btnNewButton.doClick();
-                }
-            }
-        });
     }
 
     private void loadWaiterUsers() {
@@ -126,13 +102,16 @@ public class loginkamarjer {
 
     private boolean validateLogin(String username, String password) {
         try (Connection conn = DbConn.getConnection()) {
-            String query = "SELECT password FROM users WHERE username = ? AND role = 'waiter'";
+            String query = "SELECT id, password FROM users WHERE username = ? AND role = 'waiter'";
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 String storedPassword = rs.getString("password");
-                return storedPassword.equals(password);
+                if (storedPassword.equals(password)) {
+                    this.userId = rs.getInt("id"); // Store the user ID in this instance
+                    return true;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -142,5 +121,9 @@ public class loginkamarjer {
 
     public JPanel getPanel() {
         return panel;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 }

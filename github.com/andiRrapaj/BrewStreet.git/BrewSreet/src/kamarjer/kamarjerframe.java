@@ -135,6 +135,7 @@ public class kamarjerframe {
     
     panel.add(btnPay);
     JPanel imagePanel = new JPanel();
+    imagePanel.setLocation(32, 390);
     imagePanel.setLayout(new GridLayout(0, 2, 10, 10)); // 2 images per row with gaps
     imagePanel.setPreferredSize(new Dimension(2 * 150 + 1 * 10, 430)); // Adjust width for 2 images per row
 

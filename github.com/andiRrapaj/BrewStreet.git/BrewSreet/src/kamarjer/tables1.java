@@ -15,7 +15,7 @@ import java.sql.Blob;
 		import java.sql.PreparedStatement;
 		import java.sql.ResultSet;
 		import java.awt.event.ActionEvent;
-		import kamarjer.kamarjerdashboard;
+		
 		import java.awt.*;
 		public class tables1 {
 		    private JPanel panel;

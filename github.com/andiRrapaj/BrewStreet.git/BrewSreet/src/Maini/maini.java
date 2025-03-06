@@ -18,7 +18,8 @@ import admin.admpfp;
 import admin.loginadm;
 import admin.tabels;
 import kamarjer.kamarjerprofil;
-import kamarjer.kamarjerdashboard;
+//import kamarjer.kamarjerdashboard;
+
 import kamarjer.kamarjerframe;
 import kamarjer.loginkamarjer;
 import kamarjer.tables1;
@@ -61,10 +62,10 @@ public class maini {
         rezervimeloged rz = new rezervimeloged(container, cards);
         JPanel rezervimeloged = rz.getPanel();
         
-        kamarjerdashboard km = new kamarjerdashboard(container, cards);
-        JPanel kamarjerdashboard = km.getPanel();
+        //kamarjerdashboard km = new kamarjerdashboard(container, cards);
+        //JPanel kamarjerdashboard = km.getPanel();
         
-        kamarjerprofil km1 = new kamarjerprofil(container, cards);
+        kamarjerprofil km1 = new kamarjerprofil(container, cards, 0);
         JPanel kamarjerprofil = km1.getPanel();
         
         admpfp admpfp1 = new admpfp(container, cards);
@@ -82,7 +83,7 @@ public class maini {
         container.add(tables1, "tables1");
         container.add(admpfp, "admpfp");
         container.add(kamarjerprofil, "kamarjerprofil");
-        container.add(kamarjerdashboard, "kamarjerdashboard");
+        //container.add(kamarjerdashboard, "kamarjerdashboard");
         container.add(rezervimeloged, "rezervimeloged");
         container.add(log, "log");
         container.add(admindashboard, "admindashboard");
